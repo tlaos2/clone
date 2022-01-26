@@ -2,6 +2,7 @@ import {
   getAuth,
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
+  AuthErrorCodes,
 } from 'firebase/auth';
 import { authService } from 'fbase';
 import React, { useState } from 'react';
@@ -10,6 +11,7 @@ const Auth = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [newAccount, setNewAccount] = useState(true);
+  const [error, setError] = useState('');
 
   const onChange = event => {
     // console.log(event.target.name);
@@ -38,13 +40,15 @@ const Auth = () => {
         );
       } else {
         //log in
-        data = await signInWithEmailAndPassword(email.password);
+        data = await signInWithEmailAndPassword(auth, email, password);
       }
       console.log(data);
     } catch (error) {
-      console.log(error);
+      setError(error.message, '!!!');
     }
   };
+
+  const toggleAccount = () => setNewAccount(prev => !prev);
 
   return (
     <div>
@@ -66,7 +70,11 @@ const Auth = () => {
           onChange={onChange}
         />
         <input type="submit" value={newAccount ? 'Create Account' : 'Log In'} />
+        {error}
       </form>
+      <span onClick={toggleAccount}>
+        {newAccount ? 'Sign in' : 'Create Account'}
+      </span>
       <div>
         <button>Continue with Google</button>
         <button>Continue with Github</button>
