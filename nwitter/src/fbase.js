@@ -1,5 +1,6 @@
 import * as firebase from 'firebase/app';
 import { getAuth } from 'firebase/auth';
+import { getFirestore } from 'firebase/firestore';
 // import "firebase/auth";
 
 // Import the functions you need from the SDKs you need
@@ -31,3 +32,4 @@ firebase.initializeApp(firebaseConfig);
 
 // export const firebaseInstance = firebase;
 export const authService = getAuth();
+export const dbService = getFirestore();
